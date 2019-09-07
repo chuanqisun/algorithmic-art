@@ -47,15 +47,13 @@ module.exports = {
         react: {
           chunks: 'all',
           enforce: true,
-          filename: 'react.[chunkhash].js',
-          name: false,
+          name: 'react',
           test: /[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom|use-react-router)[\\/]/,
         },
         styled: {
           chunks: 'all',
           enforce: true,
-          filename: 'styled-components.[chunkhash].js',
-          name: false,
+          name: 'styled-components',
           test: /[\\/]node_modules[\\/](styled-components)[\\/]/,
         },
       },
