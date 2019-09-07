@@ -1,0 +1,38 @@
+{
+  "name": "cux-lab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --open webpack --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "stats": "npm run profile && npm run analyze",
+    "profile": "webpack --config webpack.prod.js --profile --json > stats.json",
+    "analyze": "webpack-bundle-analyzer stats.json dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
+    "@types/react-router-dom": "^4.3.5",
+    "@types/styled-components": "^4.1.18",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.0.4",
+    "file-loader": "^4.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-router-dom": "^5.0.1",
+    "styled-components": "^4.3.2",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.6.2",
+    "use-react-router": "^1.0.7",
+    "webpack": "^4.39.3",
+    "webpack-bundle-analyzer": "^3.4.1",
+    "webpack-cli": "^3.3.8",
+    "webpack-dev-server": "^3.8.0",
+    "webpack-merge": "^4.2.2"
+  }
+}
