@@ -4,6 +4,14 @@ import { useRef, useEffect, useState } from 'react';
 import { Scalar } from '../facility/form/scalar';
 import { ParametericForm } from '../facility/form/parametric-form';
 
+interface Preset {
+  centerY: number;
+  rotateFactor: number;
+  scaleFactor: number;
+  triangleSize: number;
+  depth: number;
+}
+
 export const Exp0001: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [centerX, setCenterX] = useState(400);
@@ -12,6 +20,22 @@ export const Exp0001: React.FC = () => {
   const [scaleFactor, setScaleFactor] = useState(1.023);
   const [triangleSize, setTriangleSize] = useState(80);
   const [depth, setDepth] = useState(200);
+
+  const preset1: Preset = {
+    centerY: 243.4,
+    rotateFactor: 1.4,
+    scaleFactor: 0.95855,
+    triangleSize: 402,
+    depth: 1144,
+  };
+
+  const usePreset = (preset: Preset) => {
+    setCenterY(preset.centerY);
+    setRotateFactor(preset.rotateFactor);
+    setScaleFactor(preset.scaleFactor);
+    setTriangleSize(preset.triangleSize);
+    setDepth(preset.depth);
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -43,6 +67,7 @@ export const Exp0001: React.FC = () => {
   return (
     <>
       <StyledCanvas ref={canvasRef} width="800" height="400"></StyledCanvas>
+      <button onClick={() => usePreset(preset1)}>Preset 1</button>
       <ParametericForm>
         <Scalar label="Depth" value={depth} onChange={setDepth} step={1} />
         <Scalar label="Triangle size" value={triangleSize} onChange={setTriangleSize} step={1} />

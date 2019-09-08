@@ -77,13 +77,13 @@ export const Exp0001: React.FC = () => {
   return (
     <>
       <StyledCanvasContainer ref={canvasContainerRef}></StyledCanvasContainer>
+      <button onClick={() => usePreset(preset1)}>Preset 1</button>
       <ParametericForm>
         <Scalar label="Depth" value={depth} onChange={e => setDepth(e)} step={0.1} />
         <Scalar label="Points" value={pointCount} onChange={e => setPointCount(e)} step={1} />
         <Scalar label="Chaos" value={chaos} onChange={e => setChaos(e)} step={1} />
         <Scalar label="Amplitude" value={amplitude} onChange={e => setAmplitude(e)} step={0.1} />
       </ParametericForm>
-      <button onClick={() => usePreset(preset1)}>Preset 1</button>
     </>
   );
 };
