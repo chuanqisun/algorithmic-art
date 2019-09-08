@@ -7,6 +7,10 @@ export const experiments = [
     subRoute: 'exp-0001',
     component: lazy(() => import(`../../experiments/exp-0001`)),
   },
+  {
+    subRoute: 'exp-0002',
+    component: lazy(() => import(`../../experiments/exp-0002`)),
+  },
 ];
 
 export function ExperimentList() {
