@@ -1,37 +1,21 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useRef, useEffect, useState } from 'react';
-import { Scalar } from '../facility/form/scalar';
-import { ParametericForm } from '../facility/form/parametric-form';
+import { useRef, useEffect } from 'react';
 import * as p5 from 'p5';
+import { useParameters } from '../facility/parameters-form/use-parameters';
 
-interface Preset {
-  depth: number;
-  pointCount: number;
-  chaos: number;
-  amplitude: number;
-}
-
-export const Exp0001: React.FC = () => {
+export const Experiment: React.FC = () => {
   const canvasContainerRef = useRef<HTMLDivElement>(null);
-  const [depth, setDepth] = useState(10);
-  const [pointCount, setPointCount] = useState(20);
-  const [chaos, setChaos] = useState(50);
-  const [amplitude, setAmplitude] = useState(50);
 
-  const preset1: Preset = {
-    depth: 56.3,
-    pointCount: 19,
-    chaos: 121,
-    amplitude: 67.8,
-  };
-
-  const usePreset = (preset: Preset) => {
-    setDepth(preset.depth);
-    setPointCount(preset.pointCount);
-    setChaos(preset.chaos);
-    setAmplitude(preset.amplitude);
-  };
+  const [params, parametersForm] = useParameters(
+    {
+      depth: { value: 10, step: 0.1 },
+      pointCount: { value: 20, step: 1 },
+      chaos: { value: 25, step: 1 },
+      amplitude: { value: 50, step: 0.1 },
+    },
+    [{ depth: 56.3, pointCount: 19, chaos: 121, amplitude: 67.8 }]
+  );
 
   useEffect(() => {
     const container = canvasContainerRef.current!;
@@ -44,14 +28,14 @@ export const Exp0001: React.FC = () => {
 
       p.draw = () => {
         const points = [];
-        for (let i = -1; i < pointCount + 2; i++) {
-          points.push({ x: (800 / pointCount) * i, y: 200 + addNoise(amplitude) });
+        for (let i = -1; i < params.pointCount + 2; i++) {
+          points.push({ x: (800 / params.pointCount) * i, y: 200 + addNoise(params.amplitude) });
         }
 
         p.background(255);
         p.noFill();
         p.stroke(0, 10);
-        for (let i = 0; i < depth ** 2; i++) {
+        for (let i = 0; i < params.depth ** 2; i++) {
           drawStrand(p, i, points);
         }
       };
@@ -60,7 +44,7 @@ export const Exp0001: React.FC = () => {
     const drawStrand = (p: p5, i: number, points: ({ x: number; y: number })[]) => {
       p.beginShape();
       points.forEach(point => {
-        p.curveVertex(point.x, point.y + addNoise(chaos));
+        p.curveVertex(point.x, point.y + addNoise(params.chaos));
       });
       p.endShape();
     };
@@ -77,13 +61,7 @@ export const Exp0001: React.FC = () => {
   return (
     <>
       <StyledCanvasContainer ref={canvasContainerRef}></StyledCanvasContainer>
-      <button onClick={() => usePreset(preset1)}>Preset 1</button>
-      <ParametericForm>
-        <Scalar label="Depth" value={depth} onChange={e => setDepth(e)} step={0.1} />
-        <Scalar label="Points" value={pointCount} onChange={e => setPointCount(e)} step={1} />
-        <Scalar label="Chaos" value={chaos} onChange={e => setChaos(e)} step={1} />
-        <Scalar label="Amplitude" value={amplitude} onChange={e => setAmplitude(e)} step={0.1} />
-      </ParametericForm>
+      {parametersForm}
     </>
   );
 };
@@ -94,4 +72,4 @@ const StyledCanvasContainer = styled.div`
   border: 1px solid #444;
 `;
 
-export default Exp0001;
+export default Experiment;

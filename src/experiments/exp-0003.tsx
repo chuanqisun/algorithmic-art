@@ -1,18 +1,22 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useRef, useEffect, useState } from 'react';
-import { Scalar } from '../facility/form/scalar';
-import { ParametericForm } from '../facility/form/parametric-form';
+import { useRef, useEffect } from 'react';
+import { useParameters } from '../facility/parameters-form/use-parameters';
 
-export const Exp0001: React.FC = () => {
+export const Experiment: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const [waveLength, setWaveLength] = useState(5);
-  const [depth, setDepth] = useState(10);
-  const [x1, setX1] = useState(200);
-  const [y1, setY1] = useState(100);
-  const [x2, setX2] = useState(600);
-  const [y2, setY2] = useState(300);
+  const [params, parametersForm] = useParameters(
+    {
+      waveLength: { value: 5, step: 0.01 },
+      depth: { value: 10, step: 0.01 },
+      x1: { value: 200, step: 1 },
+      y1: { value: 100, step: 1 },
+      x2: { value: 600, step: 1 },
+      y2: { value: 300, step: 1 },
+    },
+    [{ waveLength: 8.67, depth: 18 }]
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -23,15 +27,15 @@ export const Exp0001: React.FC = () => {
     function draw() {
       ctx.strokeStyle = '#444';
 
-      for (let i = 0; i < 2 ** depth; i++) {
+      for (let i = 0; i < 2 ** params.depth; i++) {
         const x = Math.random() * 800;
         const y = Math.random() * 400;
 
-        const distanceToS1 = getDistance(x, y, x1, y1);
-        const distanceToS2 = getDistance(x, y, x2, y2);
+        const distanceToS1 = getDistance(x, y, params.x1, params.y1);
+        const distanceToS2 = getDistance(x, y, params.x2, params.y2);
 
-        const s1Amplitude = Math.cos(distanceToS1 / waveLength);
-        const s2Amplitude = Math.cos(distanceToS2 / waveLength);
+        const s1Amplitude = Math.cos(distanceToS1 / params.waveLength);
+        const s2Amplitude = Math.cos(distanceToS2 / params.waveLength);
         const totalAmplitude = s1Amplitude + s2Amplitude;
 
         const displayProbability = (totalAmplitude + 2) / 4;
@@ -48,14 +52,7 @@ export const Exp0001: React.FC = () => {
   return (
     <>
       <StyledCanvas ref={canvasRef} width="800" height="400"></StyledCanvas>
-      <ParametericForm>
-        <Scalar label="Depth" value={depth} onChange={setDepth} step={0.01} />
-        <Scalar label="x1" value={x1} onChange={setX1} step={1} />
-        <Scalar label="y1" value={y1} onChange={setY1} step={1} />
-        <Scalar label="x2" value={x2} onChange={setX2} step={1} />
-        <Scalar label="y2" value={y2} onChange={setY2} step={1} />
-        <Scalar label="Wave length" value={waveLength} onChange={setWaveLength} step={0.01} />
-      </ParametericForm>
+      {parametersForm}
     </>
   );
 };
@@ -68,4 +65,4 @@ function getDistance(x1: number, y1: number, x2: number, y2: number) {
   return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 }
 
-export default Exp0001;
+export default Experiment;

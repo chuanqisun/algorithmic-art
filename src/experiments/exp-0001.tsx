@@ -1,41 +1,30 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { useRef, useEffect, useState } from 'react';
-import { Scalar } from '../facility/form/scalar';
-import { ParametericForm } from '../facility/form/parametric-form';
+import { useRef, useEffect } from 'react';
+import { useParameters } from '../facility/parameters-form/use-parameters';
 
-interface Preset {
-  centerY: number;
-  rotateFactor: number;
-  scaleFactor: number;
-  triangleSize: number;
-  depth: number;
-}
-
-export const Exp0001: React.FC = () => {
+export const Experiment: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [centerX, setCenterX] = useState(400);
-  const [centerY, setCenterY] = useState(200);
-  const [rotateFactor, setRotateFactor] = useState(1);
-  const [scaleFactor, setScaleFactor] = useState(1.023);
-  const [triangleSize, setTriangleSize] = useState(80);
-  const [depth, setDepth] = useState(200);
 
-  const preset1: Preset = {
-    centerY: 243.4,
-    rotateFactor: 1.4,
-    scaleFactor: 0.95855,
-    triangleSize: 402,
-    depth: 1144,
-  };
-
-  const usePreset = (preset: Preset) => {
-    setCenterY(preset.centerY);
-    setRotateFactor(preset.rotateFactor);
-    setScaleFactor(preset.scaleFactor);
-    setTriangleSize(preset.triangleSize);
-    setDepth(preset.depth);
-  };
+  const [params, parametersForm] = useParameters(
+    {
+      centerX: { value: 400 },
+      centerY: { value: 200 },
+      rotateFactor: { value: 1, step: 0.1 },
+      scaleFactor: { value: 1.023 },
+      triangleSize: { value: 80, step: 1 },
+      depth: { value: 200, step: 1 },
+    },
+    [
+      {
+        centerY: 243.4,
+        rotateFactor: 1.4,
+        scaleFactor: 0.95855,
+        triangleSize: 402,
+        depth: 1144,
+      },
+    ]
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -43,18 +32,18 @@ export const Exp0001: React.FC = () => {
 
     ctx.clearRect(0, 0, 800, 400);
 
-    const rotateStep = (i: number) => (Math.PI * rotateFactor * i) / 180;
-    const scaleStep = (i: number) => Math.pow(scaleFactor, i);
+    const rotateStep = (i: number) => (Math.PI * params.rotateFactor * i) / 180;
+    const scaleStep = (i: number) => Math.pow(params.scaleFactor, i);
 
     function draw() {
       ctx.strokeStyle = '#444';
 
-      const triangle = makeTriangle(centerX, centerY, triangleSize);
+      const triangle = makeTriangle(params.centerX, params.centerY, params.triangleSize);
 
-      for (let i = 0; i < depth; i++) {
+      for (let i = 0; i < params.depth; i++) {
         ctx.save();
-        rotateObject(ctx, centerX, centerY, rotateStep(i));
-        scaleObject(ctx, centerX, centerY, scaleStep(i));
+        rotateObject(ctx, params.centerX, params.centerY, rotateStep(i));
+        scaleObject(ctx, params.centerX, params.centerY, scaleStep(i));
         ctx.lineWidth = 1 / scaleStep(i);
         ctx.stroke(triangle);
         ctx.restore();
@@ -67,15 +56,7 @@ export const Exp0001: React.FC = () => {
   return (
     <>
       <StyledCanvas ref={canvasRef} width="800" height="400"></StyledCanvas>
-      <button onClick={() => usePreset(preset1)}>Preset 1</button>
-      <ParametericForm>
-        <Scalar label="Depth" value={depth} onChange={setDepth} step={1} />
-        <Scalar label="Triangle size" value={triangleSize} onChange={setTriangleSize} step={1} />
-        <Scalar label="Center X" value={centerX} onChange={setCenterX} />
-        <Scalar label="Center Y" value={centerY} onChange={setCenterY} />
-        <Scalar label="Rotate" value={rotateFactor} onChange={setRotateFactor} step={0.1} />
-        <Scalar label="Scale" value={scaleFactor} onChange={setScaleFactor} />
-      </ParametericForm>
+      {parametersForm}
     </>
   );
 };
@@ -105,4 +86,4 @@ function scaleObject(ctx: CanvasRenderingContext2D, x: number, y: number, factor
   ctx.translate(-x, -y);
 }
 
-export default Exp0001;
+export default Experiment;
