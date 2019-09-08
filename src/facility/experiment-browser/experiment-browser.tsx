@@ -1,11 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
+
 import { Switch, Route } from 'react-router-dom';
 import { experiments } from '../experiment-list/experiment-list';
 
 export function ExperimentBrowser() {
   return (
     <>
+      <NavLink to={`/`}>Home</NavLink>
       <Switch>
         {experiments.map(exp => (
           <Route key={exp.subRoute} path={`/exp/${exp.subRoute}`}>
