@@ -1,14 +1,17 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useRef, useEffect, useState } from 'react';
+import { Scalar } from '../facility/form/scalar';
+import { ParametericForm } from '../facility/form/parametric-form';
 
 export const Exp0001: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [centerX, setCenterX] = useState(200);
-  const [centerY, setCenterY] = useState(120);
-  const [rotateFactor, setRotateFactor] = useState(0.0052);
+  const [centerX, setCenterX] = useState(400);
+  const [centerY, setCenterY] = useState(200);
+  const [rotateFactor, setRotateFactor] = useState(1);
   const [scaleFactor, setScaleFactor] = useState(1.023);
   const [triangleSize, setTriangleSize] = useState(80);
+  const [depth, setDepth] = useState(200);
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -16,7 +19,7 @@ export const Exp0001: React.FC = () => {
 
     ctx.clearRect(0, 0, 800, 400);
 
-    const rotateStep = (i: number) => Math.PI * rotateFactor * i;
+    const rotateStep = (i: number) => (Math.PI * rotateFactor * i) / 180;
     const scaleStep = (i: number) => Math.pow(scaleFactor, i);
 
     function draw() {
@@ -24,7 +27,7 @@ export const Exp0001: React.FC = () => {
 
       const triangle = makeTriangle(centerX, centerY, triangleSize);
 
-      for (let i = 0; i < 199; i++) {
+      for (let i = 0; i < depth; i++) {
         ctx.save();
         rotateObject(ctx, centerX, centerY, rotateStep(i));
         scaleObject(ctx, centerX, centerY, scaleStep(i));
@@ -40,32 +43,14 @@ export const Exp0001: React.FC = () => {
   return (
     <>
       <StyledCanvas ref={canvasRef} width="800" height="400"></StyledCanvas>
-      <div>
-        <label>
-          Triangle size
-          <input type="number" value={triangleSize} onChange={e => setTriangleSize(parseInt(e.target.value))} />
-        </label>
-        <br />
-        <label>
-          Center X
-          <input type="number" value={centerX} onChange={e => setCenterX(parseInt(e.target.value))} />
-        </label>
-        <br />
-        <label>
-          Center Y
-          <input type="number" value={centerY} onChange={e => setCenterY(parseInt(e.target.value))} />
-        </label>
-        <br />
-        <label>
-          Rotate
-          <input type="number" value={rotateFactor} onChange={e => setRotateFactor(parseFloat(e.target.value))} />
-        </label>
-        <br />
-        <label>
-          Scale
-          <input type="number" value={scaleFactor} onChange={e => setScaleFactor(parseFloat(e.target.value))} />
-        </label>
-      </div>
+      <ParametericForm>
+        <Scalar label="Depth" value={depth} onChange={setDepth} stepSize={1} />
+        <Scalar label="Triangle size" value={triangleSize} onChange={setTriangleSize} stepSize={1} />
+        <Scalar label="Center X" value={centerX} onChange={setCenterX} />
+        <Scalar label="Center Y" value={centerY} onChange={setCenterY} />
+        <Scalar label="Rotate" value={rotateFactor} onChange={setRotateFactor} stepSize={0.1} />
+        <Scalar label="Scale" value={scaleFactor} onChange={setScaleFactor} />
+      </ParametericForm>
     </>
   );
 };
