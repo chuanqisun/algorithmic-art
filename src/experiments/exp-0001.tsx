@@ -44,11 +44,11 @@ export const Exp0001: React.FC = () => {
     <>
       <StyledCanvas ref={canvasRef} width="800" height="400"></StyledCanvas>
       <ParametericForm>
-        <Scalar label="Depth" value={depth} onChange={setDepth} stepSize={1} />
-        <Scalar label="Triangle size" value={triangleSize} onChange={setTriangleSize} stepSize={1} />
+        <Scalar label="Depth" value={depth} onChange={setDepth} step={1} />
+        <Scalar label="Triangle size" value={triangleSize} onChange={setTriangleSize} step={1} />
         <Scalar label="Center X" value={centerX} onChange={setCenterX} />
         <Scalar label="Center Y" value={centerY} onChange={setCenterY} />
-        <Scalar label="Rotate" value={rotateFactor} onChange={setRotateFactor} stepSize={0.1} />
+        <Scalar label="Rotate" value={rotateFactor} onChange={setRotateFactor} step={0.1} />
         <Scalar label="Scale" value={scaleFactor} onChange={setScaleFactor} />
       </ParametericForm>
     </>

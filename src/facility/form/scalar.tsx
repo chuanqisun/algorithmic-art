@@ -6,30 +6,22 @@ interface ScalarProps {
   label: string;
   value: number;
   stepCount?: number;
-  stepSize?: number;
+  step?: number;
   onChange: (value: number) => any;
 }
 
 export const Scalar: React.FC<ScalarProps> = props => {
-  const [stepSize, setStepSize] = useState(props.stepSize || Math.abs(props.value / 1000));
+  const [step, setStep] = useState(props.step || Math.abs(props.value / 1000));
   const [stepCount, setStepCount] = useState(props.stepCount || 1000);
-  const [min, setMin] = useState(props.value - stepCount * stepSize);
-  const [max, setMax] = useState(props.value + stepCount * stepSize);
+  const [min, setMin] = useState(props.value - stepCount * step);
+  const [max, setMax] = useState(props.value + stepCount * step);
 
   return (
     <StyledLabel>
       <div>
         {props.label} ({props.value})
       </div>
-      <input
-        className="input"
-        type="range"
-        value={props.value}
-        step={stepSize}
-        min={min}
-        max={max}
-        onChange={e => props.onChange(parseFloat(e.target.value))}
-      />
+      <input className="input" type="range" value={props.value} step={step} min={min} max={max} onChange={e => props.onChange(parseFloat(e.target.value))} />
     </StyledLabel>
   );
 };

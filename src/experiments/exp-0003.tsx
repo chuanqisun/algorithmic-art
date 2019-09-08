@@ -49,12 +49,12 @@ export const Exp0001: React.FC = () => {
     <>
       <StyledCanvas ref={canvasRef} width="800" height="400"></StyledCanvas>
       <ParametericForm>
-        <Scalar label="Depth" value={depth} onChange={setDepth} stepSize={0.01} />
-        <Scalar label="x1" value={x1} onChange={setX1} stepSize={1} />
-        <Scalar label="y1" value={y1} onChange={setY1} stepSize={1} />
-        <Scalar label="x2" value={x2} onChange={setX2} stepSize={1} />
-        <Scalar label="y2" value={y2} onChange={setY2} stepSize={1} />
-        <Scalar label="Wave length" value={waveLength} onChange={setWaveLength} stepSize={0.01} />
+        <Scalar label="Depth" value={depth} onChange={setDepth} step={0.01} />
+        <Scalar label="x1" value={x1} onChange={setX1} step={1} />
+        <Scalar label="y1" value={y1} onChange={setY1} step={1} />
+        <Scalar label="x2" value={x2} onChange={setX2} step={1} />
+        <Scalar label="y2" value={y2} onChange={setY2} step={1} />
+        <Scalar label="Wave length" value={waveLength} onChange={setWaveLength} step={0.01} />
       </ParametericForm>
     </>
   );

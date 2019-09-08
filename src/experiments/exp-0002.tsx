@@ -34,7 +34,7 @@ export const Exp0001: React.FC = () => {
     <>
       <StyledCanvas ref={canvasRef} width="800" height="400"></StyledCanvas>
       <ParametericForm>
-        <Scalar label="Depth" value={depth} onChange={setDepth} stepSize={0.005} />
+        <Scalar label="Depth" value={depth} onChange={setDepth} step={0.005} />
         <Scalar label="Radius" value={radius} onChange={setRadius} />
       </ParametericForm>
     </>
