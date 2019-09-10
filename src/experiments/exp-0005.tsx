@@ -23,6 +23,13 @@ export const Experiment: React.FC = () => {
         chaos: 58,
         amplitude: 73.1,
       },
+      {
+        depth: 13,
+        radius: 227,
+        pointCount: 113,
+        chaos: 792,
+        amplitude: 50,
+      },
     ]
   );
 
